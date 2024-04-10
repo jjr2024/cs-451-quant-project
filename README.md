@@ -1,5 +1,9 @@
 # cs-451-quant-project
 
+Authors:
+James Ohr
+Donovan Wood
+Andre Xiao
 
 ## Abstract
 Few investors are able to consistently beat stock indices like the S&P 500 regardless of whether they use quantitative approaches or not. We would like to contribute the latest attempt at predicting stock prices accurately nonetheless. We plan to build a model able to predict stock price movements using a mix of fundamental and “alternative” data, which is any relevant data that impacts a company’s financials but are not included in traditional sources of company information. We will assess our performance in multiple ways, such as simple accuracy measures (prediction vs. reality) and potentially with trading simulations in which our algorithm “invests” over a period of time and we compare its performance to benchmarks like the S&P 500.
