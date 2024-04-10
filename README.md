@@ -1,8 +1,8 @@
 # cs-451-quant-project
 
 Authors:
-James Ohr
-Donovan Wood
+James Ohr, 
+Donovan Wood, 
 Andre Xiao
 
 ## Abstract
