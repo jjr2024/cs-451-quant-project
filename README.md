@@ -1,9 +1,9 @@
 # cs-451-quant-project
 
-Authors:
-James Ohr, 
+**Authors:**
+*James Ohr, 
 Donovan Wood, 
-Andre Xiao
+Andre Xiao*
 
 ## Abstract
 Few investors are able to consistently beat stock indices like the S&P 500 regardless of whether they use quantitative approaches or not. We would like to contribute the latest attempt at predicting stock prices accurately nonetheless. We plan to build a model able to predict stock price movements using a mix of fundamental and “alternative” data, which is any relevant data that impacts a company’s financials but are not included in traditional sources of company information. We will assess our performance in multiple ways, such as simple accuracy measures (prediction vs. reality) and potentially with trading simulations in which our algorithm “invests” over a period of time and we compare its performance to benchmarks like the S&P 500.
@@ -34,16 +34,20 @@ Company financial information will be more difficult to access in bulk. Company 
 ## What You Will Learn
 
 
-James
+### James
 
 Goal: “Create a high quality, easy-to-understand project I can refer back to in the future for personal projects down the line”
 
 I’m interested in keeping a clean code base that is well-commented and well-organized throughout the project so it can be a useful reference for future work. I’d like to use this project as an opportunity to apply what I know conceptually about finance in a model and test it rigorously. I’m interested in also getting familiar with cleaning up messy real-world data so that I get experience beyond the clean datasets we’re generally provided in classroom settings.
 
 
-Donovan
+### Donovan
 
 Through working on this project, I wish to learn more about the financial markets, quantitative aspects that factor into trade, increase my coding repertoire (specifically in relation to quantitative trading), create meaningful relationships with my project partners, ensure I have a full grasp of the model we create (knowing what we are doing and why completely) and hopefully create a successful model by our groups metrics. In order to accomplish these feats, not only will I have to communicate effectively and proactively with my group mates, but also stay interested and motivated throughout. Tying this back to my original goal-setting reflection that I completed near the beginning of the semester, this aspect of the project does not faze me due to my own personal interest in the matter. From the very beginning of signing up for this class, my interest has always been to develop a model such as the one we are proposing. I hope that this aspiration continues to grow and develop as the project comes to fruition. 
+
+### Andre
+
+I am looking forward to learning more about financial markets and improving my coding skills and potentially my math skills as well. My goal for the project is to learn more about mathematical models used in quantitative finance and hopefully apply them successfully using clean and efficient code. I am especially excited about the research part of the project and plan to go through different research papers to learn about different algorithms used in modeling financial markets. Additionally, I will communicate effectively with my teammates and be a proactive team member so we can be as efficient as possible given the limited time that we have to create a quantitative financial model.
 
 
 ## Risk Statement
