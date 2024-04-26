@@ -1,0 +1,7 @@
+Data Timeframe: Daily
+
+Securities Analyzed: Large-caps (easiest to find data)
+
+Specific Securities: 5-7 similar companies (size, industry)
+
+For now autos. 
