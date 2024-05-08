@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
 
-def prepare_data(tickers, start_date, end_date, test_size=0.1):
+def prepare_data(tickers, start_date=None, end_date=None, period=None, test_size=0.1):
     '''
     Combines data of all tickers into a single dataframe for X_train. X_test is a list of dataframes for each ticker.
     '''
@@ -15,11 +15,11 @@ def prepare_data(tickers, start_date, end_date, test_size=0.1):
     y_train_list = []
     X_test_list = []
     y_test_list = []
-    mm_scalers = []
-    ss_scalers = []
+    X_scalers = []
+    y_scalers = []
     for t in tickers:
         ticker_data = yf.Ticker(t)
-        data = ticker_data.history(start=start_date, end=end_date)
+        data = ticker_data.history(start=start_date, end=end_date, period=period)
 
         # Calculate moving averages and std
         data['SMA_20'] = data['Close'].rolling(window=20).mean()
@@ -40,7 +40,10 @@ def prepare_data(tickers, start_date, end_date, test_size=0.1):
         data['RSI'] = 100 - (100 / (1 + rs))
         # Calculate TTM EPS and P/E
         eps = ticker_data.get_earnings_dates(limit=60)
+        eps = eps.loc[~eps.index.duplicated(keep='first'), :]
         eps = eps[(eps.index >= (data.index[0]-relativedelta(years=1))) & (eps.index <= data.index[-1])]
+        if t == 'DUK':
+            eps.loc[eps.index == pd.to_datetime('2024-05-07').date(), 'Reported EPS'] = 1.44
         eps = eps.iloc[::-1]
         eps['TTM'] = eps['Reported EPS'].rolling(window=4).sum()
         eps.index = eps.index.date
@@ -66,13 +69,14 @@ def prepare_data(tickers, start_date, end_date, test_size=0.1):
         y = data.iloc[:, (data.shape[1]-1):(data.shape[1])]
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=42, shuffle=False)
         
-        mm = MinMaxScaler()
-        ss = StandardScaler()
+        ss1 = StandardScaler()
+        ss2 = StandardScaler()
+        #mm = MinMaxScaler()
 
-        X_train_ss = pd.DataFrame(ss.fit_transform(X_train), index=X_train.index, columns=X_train.columns) # fit ss and transform X_train
-        y_train_mm = pd.DataFrame(mm.fit_transform(y_train), index=y_train.index, columns=y_train.columns) # fit mm and transform y_train
-        X_test_ss = pd.DataFrame(ss.transform(X_test), index=X_test.index, columns=X_test.columns) # transform X_test with fitted ss
-        y_test_mm = pd.DataFrame(mm.transform(y_test), index=y_test.index, columns=y_test.columns) # transform y_test with fitted mm
+        X_train_ss = pd.DataFrame(ss1.fit_transform(X_train), index=X_train.index, columns=X_train.columns) # fit ss and transform X_train
+        y_train_mm = pd.DataFrame(ss2.fit_transform(y_train), index=y_train.index, columns=y_train.columns) # fit mm and transform y_train
+        X_test_ss = pd.DataFrame(ss1.transform(X_test), index=X_test.index, columns=X_test.columns) # transform X_test with fitted ss
+        y_test_mm = pd.DataFrame(ss2.transform(y_test), index=y_test.index, columns=y_test.columns) # transform y_test with fitted mm
         X_train_ss['Ticker'] = t
         X_test_ss['Ticker'] = t
         print(X_train.shape)
@@ -80,8 +84,8 @@ def prepare_data(tickers, start_date, end_date, test_size=0.1):
         y_train_list.append(y_train_mm)
         X_test_list.append(X_test_ss)
         y_test_list.append(y_test_mm)
-        mm_scalers.append(mm)
-        ss_scalers.append(ss)
+        X_scalers.append(ss1)
+        y_scalers.append(ss2)
     batch_size = X_train_list[0].shape[0]
 
-    return pd.concat(X_train_list, ignore_index=False), pd.concat(y_train_list, ignore_index=False), X_test_list, y_test_list, mm_scalers, ss_scalers, batch_size
+    return pd.concat(X_train_list, ignore_index=False), pd.concat(y_train_list, ignore_index=False), X_test_list, y_test_list, X_scalers, y_scalers, batch_size
