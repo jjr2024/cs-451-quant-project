@@ -1,7 +1,0 @@
-Data Timeframe: Daily
-
-Securities Analyzed: Large-caps (easiest to find data)
-
-Specific Securities: 5-7 similar companies (size, industry)
-
-Next steps: batch companies in energy. Bring in features of those companies.
