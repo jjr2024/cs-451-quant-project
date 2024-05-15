@@ -22,8 +22,11 @@ def prepare_data(tickers, start_date=None, end_date=None, period=None, test_size
         data = ticker_data.history(start=start_date, end=end_date, period=period)
 
         # Calculate moving averages and std
+        data['SMA_10'] = data['Close'].rolling(window=10).mean()
         data['SMA_20'] = data['Close'].rolling(window=20).mean()
         data['SMA_50'] = data['Close'].rolling(window=50).mean()
+        data['SMA_100'] = data['Close'].rolling(window=100).mean()
+        data['SMA_250'] = data['Close'].rolling(window=250).mean()
         data['Std_Dev'] = data['Close'].rolling(window=20).std()
 
         # Calculate the z-score
