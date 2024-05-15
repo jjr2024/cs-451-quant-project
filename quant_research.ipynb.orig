@@ -11,11 +11,18 @@
     "---\n",
     "title: Quantitative Trading Model Using LSTM\n",
     "author: Andre Xiao, James Ohr, Donovan Wood\n",
+<<<<<<< HEAD
+    "date: '2024-04-22'\n",
+    "image: \"quant.jpg\"\n",
+    "description: \"Final Project for CS451\"\n",
+    "format: html\n",
+=======
     "date: '2024-05-15'\n",
     "image: \"quant.jpg\"\n",
     "description: \"Final Project for CS451\"\n",
     "format: html\n",
     "bibliography: refs.bib\n",
+>>>>>>> 98d255ff22944e541db7b36fd9cef5e024dbfa36
     "---"
    ]
   },
