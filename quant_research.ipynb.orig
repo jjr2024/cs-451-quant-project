@@ -13,11 +13,14 @@
     "author: Andre Xiao, James Ohr, Donovan Wood\n",
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     "date: '2024-04-22'\n",
     "image: \"quant.jpg\"\n",
     "description: \"Final Project for CS451\"\n",
     "format: html\n",
 =======
+=======
+>>>>>>> ef93f71f484a3cbe5a757753e6c85128175d5c5a
 =======
 >>>>>>> ef93f71f484a3cbe5a757753e6c85128175d5c5a
     "date: '2024-05-15'\n",
@@ -26,7 +29,10 @@
     "format: html\n",
     "bibliography: refs.bib\n",
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> 98d255ff22944e541db7b36fd9cef5e024dbfa36
+=======
+>>>>>>> ef93f71f484a3cbe5a757753e6c85128175d5c5a
 =======
 >>>>>>> ef93f71f484a3cbe5a757753e6c85128175d5c5a
     "---"
@@ -224,13 +230,19 @@
    "outputs": [],
    "source": [
 <<<<<<< HEAD
+<<<<<<< HEAD
     "tickers = ['XOM', 'CVX', 'COP', 'EPD', 'PXD', 'EOG', 'DUK', 'MPC', 'SLB', 'PSX']\n",
 =======
+=======
+>>>>>>> ef93f71f484a3cbe5a757753e6c85128175d5c5a
     "<<<<<<< local\n",
     "tickers = ['XOM', 'CVX', 'COP', 'EPD', 'EOG', 'DUK', 'MPC', 'SLB', 'PSX', 'PXD']\n",
     "=======\n",
     "tickers = ['XOM', 'CVX', 'COP', 'EPD', 'PXD', 'EOG', 'DUK', 'MPC', 'SLB', 'PSX']\n",
     ">>>>>>> remote\n",
+<<<<<<< HEAD
+>>>>>>> ef93f71f484a3cbe5a757753e6c85128175d5c5a
+=======
 >>>>>>> ef93f71f484a3cbe5a757753e6c85128175d5c5a
     "start = '2014-05-06'\n",
     "end = '2024-05-07'\n",
@@ -242,8 +254,11 @@
    "execution_count": null,
    "metadata": {},
 <<<<<<< HEAD
+<<<<<<< HEAD
    "outputs": [],
 =======
+=======
+>>>>>>> ef93f71f484a3cbe5a757753e6c85128175d5c5a
    "outputs": [
     {
      "name": "stderr",
@@ -283,6 +298,9 @@
      ]
     }
    ],
+<<<<<<< HEAD
+>>>>>>> ef93f71f484a3cbe5a757753e6c85128175d5c5a
+=======
 >>>>>>> ef93f71f484a3cbe5a757753e6c85128175d5c5a
    "source": [
     "# preps data, see lstm_data.py, prints size of each ticker's dataset\n",
@@ -357,8 +375,11 @@
    "execution_count": null,
    "metadata": {},
 <<<<<<< HEAD
+<<<<<<< HEAD
    "outputs": [],
 =======
+=======
+>>>>>>> ef93f71f484a3cbe5a757753e6c85128175d5c5a
    "outputs": [
     {
      "name": "stderr",
@@ -398,6 +419,9 @@
      ]
     }
    ],
+<<<<<<< HEAD
+>>>>>>> ef93f71f484a3cbe5a757753e6c85128175d5c5a
+=======
 >>>>>>> ef93f71f484a3cbe5a757753e6c85128175d5c5a
    "source": [
     "for epoch in range(num_epochs):\n",
@@ -440,6 +464,10 @@
     "    idx = X_test.index[:predicted_price.size]\n",
     "    predicted_price.index = idx # fix index of predicted prices\n",
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+    "\n",
+>>>>>>> ef93f71f484a3cbe5a757753e6c85128175d5c5a
 =======
     "\n",
 >>>>>>> ef93f71f484a3cbe5a757753e6c85128175d5c5a
@@ -449,6 +477,7 @@
     "    X_test['Predicted_Returns'] = X_test['Predicted_Price'].pct_change()\n",
     "    X_test['Predicted_Signal'] = (X_test['Predicted_Returns'] > 0).astype(int) # predicted buy/sell signal based on predicted returns\n",
     "    X_test['Strategy_Returns'] = X_test['Returns'] * X_test['Predicted_Signal'].shift(1) # calculate daily strategy returns\n",
+<<<<<<< HEAD
 <<<<<<< HEAD
     "    cumulative_strategy_returns = (X_test['Strategy_Returns'].fillna(0) + 1).cumprod()\n",
     "    returns = X_test.loc[X_test.index, 'Returns']\n",
@@ -479,6 +508,8 @@
     "\n",
     "    return cumulative_strategy_returns, cumulative_stock_returns"
 =======
+=======
+>>>>>>> ef93f71f484a3cbe5a757753e6c85128175d5c5a
     "\n",
     "    # calculate last value benchmark\n",
     "    X_test['Last_Value_Prediction'] = X_test['Returns'].shift(1)\n",
@@ -517,17 +548,23 @@
     "    # plt.title(f'{ticker} Confusion Matrix')\n",
     "\n",
     "    return cumulative_strategy_returns, cumulative_stock_returns, cumulative_lv_returns, accuracy, lv_accuracy"
+<<<<<<< HEAD
+>>>>>>> ef93f71f484a3cbe5a757753e6c85128175d5c5a
+=======
 >>>>>>> ef93f71f484a3cbe5a757753e6c85128175d5c5a
    ]
   },
   {
    "cell_type": "code",
 <<<<<<< HEAD
+<<<<<<< HEAD
    "execution_count": null,
    "metadata": {},
    "outputs": [],
    "source": [
 =======
+=======
+>>>>>>> ef93f71f484a3cbe5a757753e6c85128175d5c5a
    "execution_count": 81,
    "metadata": {},
    "outputs": [
@@ -963,6 +1000,9 @@
     }
    ],
    "source": [
+<<<<<<< HEAD
+>>>>>>> ef93f71f484a3cbe5a757753e6c85128175d5c5a
+=======
 >>>>>>> ef93f71f484a3cbe5a757753e6c85128175d5c5a
     "cum_strat_returns_list = np.array([])\n",
     "cum_stock_returns_list = np.array([])\n",
@@ -975,10 +1015,13 @@
   {
    "cell_type": "code",
 <<<<<<< HEAD
+<<<<<<< HEAD
    "execution_count": null,
    "metadata": {},
    "outputs": [],
 =======
+=======
+>>>>>>> ef93f71f484a3cbe5a757753e6c85128175d5c5a
    "execution_count": 391,
    "metadata": {},
    "outputs": [
@@ -991,6 +1034,9 @@
      ]
     }
    ],
+<<<<<<< HEAD
+>>>>>>> ef93f71f484a3cbe5a757753e6c85128175d5c5a
+=======
 >>>>>>> ef93f71f484a3cbe5a757753e6c85128175d5c5a
    "source": [
     "total_strat_returns = (cum_strat_returns_list).mean()\n",
