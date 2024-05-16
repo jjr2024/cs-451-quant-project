@@ -138,7 +138,7 @@ def evaluate_lstm(model, X_test, y_test, X_scaler, y_scaler, features):
     cumulative_lv_returns = (X_test['Last_Value_Returns'].fillna(0) + 1).cumprod()
 
     X_test['Last_Value'] = X_test["Close"].shift(1)
-    prediction_correl = X_test['Predicted_Price'].corr(X_test['Close'])
+    prediction_correl = X_test['Predicted_Price'].shift(1).corr(X_test['Close'])
     lv_prediction_correl = X_test['Last_Value'].corr(X_test['Close'])
     print(f'{ticker} Accuracy: {accuracy}, Correlation: {prediction_correl}, Last Value Accuracy: {lv_accuracy}, Last Value Correlation: {lv_prediction_correl}')
 
