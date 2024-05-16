@@ -123,8 +123,8 @@ def evaluate_lstm(model, X_test, y_test, X_scaler, y_scaler, features):
     X_test['Strategy_Returns'] = X_test['Returns'] * X_test['Predicted_Signal'].shift(1) # calculate daily strategy returns
 
     # calculate last value benchmark
-    X_test['Last_Value_Prediction'] = X_test['Returns'].shift(1)
-    X_test['Last_Value_Signal'] = (X_test['Last_Value_Prediction'].shift(-1) > 0)*1
+    X_test['Last_Value_Prediction'] = X_test['Returns']
+    X_test['Last_Value_Signal'] = (X_test['Last_Value_Prediction'] > 0)*1
     X_test['Last_Value_Returns'] = X_test['Returns'] * X_test['Last_Value_Signal'].shift(1) 
 
     cumulative_strategy_returns = (X_test['Strategy_Returns'].fillna(0) + 1).cumprod()
