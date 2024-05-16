@@ -5,6 +5,11 @@ import pandas as pd
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
+from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
+import torch
+from torch.autograd import Variable
+import matplotlib.pyplot as plt
+
 
 def prepare_data(tickers, start_date=None, end_date=None, period=None, test_size=0.1):
     '''
@@ -45,6 +50,8 @@ def prepare_data(tickers, start_date=None, end_date=None, period=None, test_size
         eps = ticker_data.get_earnings_dates(limit=60)
         eps = eps.loc[~eps.index.duplicated(keep='first'), :]
         eps = eps[(eps.index >= (data.index[0]-relativedelta(years=1))) & (eps.index <= data.index[-1])]
+
+        # Need to clean data for DUK since earnings were not updated for the 2024-05-07 earnings call
         if t == 'DUK':
             eps.loc[eps.index == pd.to_datetime('2024-05-07').date(), 'Reported EPS'] = 1.44
         eps = eps.iloc[::-1]
@@ -92,3 +99,63 @@ def prepare_data(tickers, start_date=None, end_date=None, period=None, test_size
     batch_size = X_train_list[0].shape[0]
 
     return pd.concat(X_train_list, ignore_index=False), pd.concat(y_train_list, ignore_index=False), X_test_list, y_test_list, X_scalers, y_scalers, batch_size
+
+def evaluate_lstm(model, X_test, y_test, X_scaler, y_scaler, features):
+    ticker = X_test['Ticker'].iloc[0] # get ticker
+    X_test_tensors = Variable(torch.Tensor(np.array(X_test[features]))) # prepare for lstm
+    X_test_final = torch.reshape(X_test_tensors,  (X_test_tensors.shape[0], 1, X_test_tensors.shape[1])) # prepare for lstm
+
+    test_predict = model(X_test_final).data.numpy() # predict
+    test_predict = y_scaler.inverse_transform(test_predict) # reverse transform back to original scale
+    cols = X_test.columns[X_test.columns != 'Ticker']
+    X_test = pd.DataFrame(X_scaler.inverse_transform(X_test[cols]), index=X_test.index, columns=cols) # reverse transform X_test back to og scale
+    predicted_price = pd.DataFrame(test_predict)
+    predicted_price.columns = ['Predicted_Price']
+    predicted_price.size
+    idx = X_test.index[:predicted_price.size]
+    predicted_price.index = idx # fix index of predicted prices
+
+    X_test = pd.concat([X_test, predicted_price], ignore_index=False, axis=1) 
+    X_test = X_test.dropna()
+    X_test['Actual_Signal'] = (X_test['Returns'].shift(-1) > 0).astype(int) # actual buy/sell signal based on daily returns
+    X_test['Predicted_Returns'] = X_test['Predicted_Price'].pct_change()
+    X_test['Predicted_Signal'] = (X_test['Predicted_Returns'] > 0).astype(int) # predicted buy/sell signal based on predicted returns
+    X_test['Strategy_Returns'] = X_test['Returns'] * X_test['Predicted_Signal'].shift(1) # calculate daily strategy returns
+
+    # calculate last value benchmark
+    X_test['Last_Value_Prediction'] = X_test['Returns'].shift(1)
+    X_test['Last_Value_Signal'] = (X_test['Last_Value_Prediction'].shift(-1) > 0)*1
+    X_test['Last_Value_Returns'] = X_test['Returns'] * X_test['Last_Value_Signal'].shift(1) 
+
+    cumulative_strategy_returns = (X_test['Strategy_Returns'].fillna(0) + 1).cumprod()
+    returns = X_test.loc[X_test.index, 'Returns']
+    returns.iloc[0] = 0
+
+    cumulative_stock_returns = (returns + 1).cumprod()
+    accuracy = (X_test['Actual_Signal'] == X_test['Predicted_Signal']).mean()
+    lv_accuracy = (X_test['Actual_Signal'] == X_test['Last_Value_Signal']).mean()
+    print(f'{ticker} Accuracy: {accuracy}, Last Value Benchmark: {lv_accuracy}')
+
+    cumulative_lv_returns = (X_test['Last_Value_Returns'].fillna(0) + 1).cumprod()
+
+    # plot stock price
+    # plt.figure(figsize=(10,5))
+    # plt.plot(X_test['Predicted_Price'].shift(1), label='Predicted Price')
+    # plt.plot(X_test['Close'], label='Actual Price')
+    # plt.title(f'{ticker} Price')
+    # plt.legend();
+
+    # # plot returns
+    # plt.figure(figsize=(10,5))
+    # plt.plot(cumulative_strategy_returns, label='Strategy Returns')
+    # plt.plot(cumulative_stock_returns, label='Stock Returns')
+    # plt.title(f'{ticker} Returns')
+    # plt.legend();
+
+    # # plot confusion matrix
+    # cm = confusion_matrix(X_test['Actual_Signal'], X_test['Predicted_Signal'])
+    # cm_display = ConfusionMatrixDisplay(cm, display_labels=['Sell', 'Buy'])
+    # cm_display.plot();
+    # plt.title(f'{ticker} Confusion Matrix')
+
+    return cumulative_strategy_returns, cumulative_stock_returns, cumulative_lv_returns, accuracy, lv_accuracy
